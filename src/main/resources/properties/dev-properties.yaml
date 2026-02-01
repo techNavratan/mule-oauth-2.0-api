@@ -1,0 +1,12 @@
+http:
+  listener:
+    host: "localhost"  
+    port: "8091"
+    path: "/mule-oauth-2.0-api/api/*"
+    
+autodiscovery:
+  id: "20715615"
+
+client_os:
+ ttl: "0"
+ expirationInerval: "1"

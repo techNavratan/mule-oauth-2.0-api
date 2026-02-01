@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:oauth2-provider="http://www.mulesoft.org/schema/mule/oauth2-provider"
+	xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/oauth2-provider http://www.mulesoft.org/schema/mule/oauth2-provider/current/mule-oauth2-provider.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+	<os:object-store name="client_os" doc:name="Object store" doc:id="2370d89b-186a-48e1-a634-c0f475c29995" entryTtl="${client_os.ttl}" expirationInterval="${client_os.expirationInerval}"/>
+	<oauth2-provider:config name="OAuth2_Provider_Config" doc:name="OAuth2 Provider Config" doc:id="d4f88887-0bfe-4e44-9633-a07d2fef24ea" listenerConfig="mule-20-oauth-httpListener" clientStore="client_os" supportedGrantTypes="CLIENT_CREDENTIALS" >
+		<oauth2-provider:token-config tokenStore="client_os" />
+	</oauth2-provider:config>
+	<http:listener-config name="mule-20-oauth-httpListener">
+        <http:listener-connection host="${http.listener.host}" port="${http.listener.port}" />
+    </http:listener-config>
+	<api-gateway:autodiscovery apiId="${autodiscovery.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="f8043764-9f6e-45bf-9fe3-f921958433ee" flowRef="mule-20-oauth-main" />
+	<configuration-properties doc:name="Configuration properties" doc:id="ef21993f-8638-47cf-846a-8c4ef4181c70" file="properties/${mule.env}.yaml" />
+	<global-property doc:name="Global Property" doc:id="bca82116-a1ba-43ef-bbcb-fab1d37c3f1e" name="mule.env" value="local-properties" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="47da6ae0-4888-49a3-99fb-e8a77d32dc35" file="properties\secure-local-properties.yaml" key="mulesoft@123456!" />
+	<configuration doc:name="Configuration" doc:id="f178dd50-9ae3-47de-bc5f-217ac3e98299" defaultErrorHandler-ref="global-error-handler" />
+</mule>

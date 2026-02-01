@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:mule-20-oauth="http://www.mulesoft.org/schema/mule/mule-20-oauth" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
+http://www.mulesoft.org/schema/mule/mule-20-oauth http://www.mulesoft.org/schema/mule/mule-20-oauth/current/mule-mule-20-oauth.xsd">
+    <apikit:config name="mule-2.0-oauth-config" api="mule-2.0-oauth.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <flow name="mule-20-oauth-main">
+        <http:listener config-ref="mule-20-oauth-httpListener" path="${http.listener.path}">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+		<apikit:router config-ref="mule-2.0-oauth-config" />
+		<error-handler ref="global-error-handler" />
+    </flow>
+    <flow name="get:\createClient:mule-2.0-oauth-config">
+		<flow-ref doc:name="create client" doc:id="aa31c64a-c7f4-4bae-8cd5-0a1c1c84156f" name="create-client-flow"/>
+    </flow>
+    <flow name="get:\ValidateToken:mule-2.0-oauth-config">
+		<flow-ref doc:name="validate token" doc:id="f488005c-ca1d-43f3-a9b5-f07a8b93bc88" name="validate-flow"/>
+    </flow>
+</mule>

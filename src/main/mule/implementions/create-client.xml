@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:oauth2-provider="http://www.mulesoft.org/schema/mule/oauth2-provider"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/oauth2-provider http://www.mulesoft.org/schema/mule/oauth2-provider/current/mule-oauth2-provider.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="create-client-flow" doc:id="3f1d0dd9-24c4-4111-8b59-74f427870155" >
+		<oauth2-provider:create-client doc:name="Create client" doc:id="20618761-53d9-4ab2-8763-51d844537ee1" config-ref="OAuth2_Provider_Config" clientId="#[attributes.headers.client_Id]" type="CONFIDENTIAL" secret="#[attributes.headers.client_secret]" clientName="#[attributes.headers.client_name]" authorizedGrantTypes="#[[attributes.headers.grant_type]]" failIfPresent="true" description='#[" "]' principal='#[" "]' redirectUris='#[["abc.com"]]'/>
+		<set-payload value="client created successfully" doc:name="response payload" doc:id="bab11393-94a1-4304-a582-ec1e18e156f6" />
+	</sub-flow>
+</mule>

@@ -1,0 +1,34 @@
+#%RAML 1.0
+title: mule-2.0-oauth
+
+version: v1
+baseUri: /api/s/oauth
+mediaType: application/json
+
+types:
+  ValidatetokenRes: !include data-type/getTokenRes.raml
+
+/createClient:
+  get:
+    description: Register client in OAuth server
+    headers:
+      client_secret: string
+      clien_name: string
+      client_Id: string
+      grant_type: string
+    responses:
+      201:
+        body:
+          application/json:
+
+/ValidateToken:
+  get:
+    description: Generate OAuth token
+    headers:
+      Authorization: string
+    responses:
+      200:
+        body:
+          application/json:
+            type: ValidatetokenRes
+            example: !include examples/tokenResexample.raml
